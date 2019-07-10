@@ -3,13 +3,13 @@
 ///! A CLI for manipulating [AVRO](https://avro.apache.org/) files.
 ///!
 ///! This crate currently expects each line to be a [Record](https://avro.apache.org/docs/1.8.1/spec.html#schema_record).
-use avro::AvroCli;
+use avro_cli::AvroCli;
 use failure::Error;
 use prettytable::{color, Attr, Cell, Row, Table};
 use regex::Regex;
 use structopt::StructOpt;
 
-mod avro;
+mod avro_cli;
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "ravro")]
@@ -94,9 +94,9 @@ fn main() -> Result<(), Error> {
                             }
                         }
 
-                        if v == avro::NULL {
+                        if v == avro_cli::NULL {
                             cell.style(Attr::ForegroundColor(color::RED));
-                        } else if v == avro::NA {
+                        } else if v == avro_cli::NA {
                             cell.style(Attr::ForegroundColor(color::BRIGHT_RED));
                         }
 
