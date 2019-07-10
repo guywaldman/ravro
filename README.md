@@ -1,6 +1,6 @@
 # ravro
 
-A CLI for Avro files, written in Rust.
+A CLI for [Apache Avro](https://avro.apache.org/) manipulations, written in Rust.
 
 ![Screenshot](./assets/screenshot.png)
 
