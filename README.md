@@ -4,7 +4,7 @@ A CLI for [Apache Avro](https://avro.apache.org/) manipulations, written in Rust
 
 ![Screenshot](./assets/image.png)
 
-> **⚠ Under heavily development ⚠**
+> **⚠ Under heavy development ⚠**
 >
 > Please use at your own discretion.
 
@@ -29,7 +29,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 
 ```shell
 > # Retrieve all columns for a list of records
-> rargo get .\bttf.avro
+> ravro get .\bttf.avro
 
 +---------------+--------------+-------------+
 | firstName     | lastName     | nickname    |
@@ -42,7 +42,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 +---------------+--------------+-------------+
 
 > # Search (using regular expressions)
-> rargo get .\bttf.avro --search McFly
+> ravro get .\bttf.avro --search McFly
 
 +---------------+--------------+-------------+
 | firstName     | lastName     | nickname    |
@@ -51,7 +51,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 +---------------+--------------+-------------+
 
 > # Select only some columns
-> rargo get .\bttf.avro --fields firstName nickname
+> ravro get .\bttf.avro --fields firstName nickname
 
 +---------------+--------------+
 | firstName     | nickname     |
