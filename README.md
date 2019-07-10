@@ -2,7 +2,7 @@
 
 A CLI for [Apache Avro](https://avro.apache.org/) manipulations, written in Rust.
 
-![Screenshot](./assets/screenshot.png)
+![Screenshot](./assets/image.png)
 
 > **⚠ Under heavily development ⚠**
 >
@@ -76,8 +76,8 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 - Configurable display formats (CSV, JSON, etc.)
 - Avro generation from JSON
 - Schema
+- `Snappy` codec
 
 ## Caveats
 
-- Only supports top-level records right now
-- Snappy not included
+- Only supports top-level records at the moment
