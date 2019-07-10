@@ -1,5 +1,7 @@
 # ravro
 
+![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-green.svg)
+
 A CLI for [Apache Avro](https://avro.apache.org/) manipulations, written in Rust.
 
 ![Screenshot](./assets/image.png)
