@@ -36,7 +36,7 @@ impl AvroCli {
         }
 
         if paths.len() == 0 {
-            panic!("No files found"):
+            panic!("No files found");
         }
 
         // TODO: Add `Codec::Snappy`
