@@ -2,6 +2,8 @@
 
 A CLI for Avro files, written in Rust.
 
+![Screenshot](./assets/screenshot.png)
+
 > **⚠ Under heavily development ⚠**
 >
 > Please use at your own discretion.
@@ -25,6 +27,7 @@ There are existing compiled binaries for Windows at the moment.
 ## Usage
 
 ```shell
+> # Retrieve all columns for a list of records
 > rargo get .\bttf.avro
 
 +---------------+--------------+-------------+
@@ -37,14 +40,16 @@ There are existing compiled binaries for Windows at the moment.
 | Biff          | Tannen       | Biff        |
 +---------------+--------------+-------------+
 
+> # Search (using regular expressions)
 > rargo get .\bttf.avro --search McFly
 
 +---------------+--------------+-------------+
 | firstName     | lastName     | nickname    |
 +---------------+--------------+-------------+
-| Marty         | McFly        | Marty       | # McFly should appear in bold here
+| Marty         | McFly        | Marty       | # McFly should appear in bold green here
 +---------------+--------------+-------------+
 
+> # Select only some columns
 > rargo get .\bttf.avro --fields firstName nickname
 
 +---------------+--------------+
@@ -57,3 +62,15 @@ There are existing compiled binaries for Windows at the moment.
 | Biff          | Biff         |
 +---------------+--------------+
 ```
+
+## Options
+
+- `fields (f)` - select only the fields you wish to retrieve
+- `path (p)` - a glob to one or multiple Avro files
+- `search (s)` - A regular expression to filter and display only rows with columns that contain matching values. The matching fields will be highlighed
+- `codec (c)` - The codec for decompression - omit for no codec, or specify "deflate"
+
+## Caveats
+
+- Only supports top-level records right now
+- Snappy not included

@@ -7,7 +7,6 @@ use avro::Avro;
 use failure::Error;
 use prettytable::{color, Attr, Cell, Row, Table};
 use regex::Regex;
-use std::path::PathBuf;
 use structopt::StructOpt;
 
 mod avro;
@@ -23,11 +22,16 @@ enum RavroArgs {
         fields_to_get: Vec<String>,
 
         /// Files to process
-        #[structopt(short = "p", long = "path", parse(from_os_str))]
-        paths: Vec<PathBuf>,
+        #[structopt(short = "p", long = "path")]
+        path: String,
+
+        /// Codec to uncompress with.
+        /// Can be omitted or "deflate"
+        #[structopt(short = "c", long = "codec")]
+        codec: Option<String>,
 
         /// Regex to search. Only a row with a matching field will appear in the outputted table
-        #[structopt(short = "r", long = "search")]
+        #[structopt(short = "s", long = "search")]
         search: Option<String>,
     },
 }
@@ -36,10 +40,11 @@ fn main() -> Result<(), Error> {
     match RavroArgs::from_args() {
         RavroArgs::Get {
             fields_to_get,
-            paths,
+            path,
             search,
+            codec
         } => {
-            let avro = Avro::from(paths);
+            let avro = Avro::from(path, codec);
             let fields_to_get = if fields_to_get.is_empty() {
                 avro.get_all_field_names()
             } else {
@@ -84,6 +89,7 @@ fn main() -> Result<(), Error> {
                             let search = Regex::new(&search).expect("Regular expression is invalid");
                             if search.is_match(v) {
                                 cell.style(Attr::Bold);
+                                cell.style(Attr::ForegroundColor(color::GREEN));
                             }
                         }
 
