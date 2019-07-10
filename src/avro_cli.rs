@@ -36,7 +36,7 @@ impl AvroCli {
         }
 
         if paths.len() == 0 {
-            panic!("No files found")
+            panic!("No files found"):
         }
 
         // TODO: Add `Codec::Snappy`
@@ -46,6 +46,7 @@ impl AvroCli {
                 codec_for_decompressing = Codec::Deflate;
             }
         }
+
         let mut files: Vec<AvroFile> = Vec::new();
         for path in paths {
             let mut data =
@@ -83,7 +84,7 @@ impl AvroCli {
     /// # Arguments
     /// * `fields_to_get` - Names of the columns to retrieve
     pub fn get_fields(&self, fields_to_get: Vec<String>) -> Vec<Vec<String>> {
-        let mut extracted_fields: Vec<Vec<String>> = Vec::new();
+        let mut extracted_fields = Vec::new();
         for file in &self.files {
             let reader = Reader::new(&file.data[..])
                 .expect(&format!("Could not read Avro file {}", file.path.display()));
@@ -91,7 +92,7 @@ impl AvroCli {
             for (i, row) in reader.enumerate() {
                 let row = row.expect(&format!("Could not parse row {} from the Avro", i));
                 if let Value::Record(fields) = row {
-                    let mut extracted_fields_for_row: Vec<String> = Vec::new();
+                    let mut extracted_fields_for_row = Vec::new();
                     for field_name in &fields_to_get {
                         let field_value_to_insert =
                             match fields.iter().find(|(n, _)| n == field_name) {
