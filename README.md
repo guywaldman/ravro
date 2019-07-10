@@ -2,7 +2,7 @@
 
 ![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-green.svg)
 
-A CLI for [Apache Avro](https://avro.apache.org/) manipulations, written in Rust.
+A CLI for [Apache Avro](https://avro.apache.org/) manipulations.
 
 ![Screenshot](./assets/image.png)
 
@@ -89,7 +89,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 
 ## Contributions
 
-Are very welcome! I am by no means an expert on Spark or Avro and there is _much_ to be improved here.
+Are very welcome! I am by no means an expert on Spark, Avro or even Rust and there is _much_ to be improved here.
 
 
 ## Thanks 🙏
