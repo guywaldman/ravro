@@ -82,9 +82,15 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 
 ## Caveats
 
+- The schema is inferred based on the first record it finds. This may not be desired for some use-cases
 - Only supports top-level records at the moment
 
 ---
+
+## Contributions
+
+Are very welcome! I am by no means an expert on Spark or Avro and there is _much_ to be improved here.
+
 
 ## Thanks 🙏
 
