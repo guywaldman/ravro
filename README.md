@@ -81,3 +81,9 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 ## Caveats
 
 - Only supports top-level records at the moment
+
+---
+
+## Thanks 🙏
+
+- [avro-rs](https://github.com/flavray/avro-rs)
