@@ -3,7 +3,7 @@
 ///! A CLI for manipulating [AVRO](https://avro.apache.org/) files.
 ///!
 ///! This crate currently expects each line to be a [Record](https://avro.apache.org/docs/1.8.1/spec.html#schema_record).
-use avro::Avro;
+use avro::AvroCli;
 use failure::Error;
 use prettytable::{color, Attr, Cell, Row, Table};
 use regex::Regex;
@@ -42,9 +42,9 @@ fn main() -> Result<(), Error> {
             fields_to_get,
             path,
             search,
-            codec
+            codec,
         } => {
-            let avro = Avro::from(path, codec);
+            let avro = AvroCli::from(path, codec);
             let fields_to_get = if fields_to_get.is_empty() {
                 avro.get_all_field_names()
             } else {
@@ -86,7 +86,8 @@ fn main() -> Result<(), Error> {
                     .filter_map(|v| {
                         let mut cell = Cell::new(v);
                         if let Some(search) = &search {
-                            let search = Regex::new(&search).expect("Regular expression is invalid");
+                            let search =
+                                Regex::new(&search).expect("Regular expression is invalid");
                             if search.is_match(v) {
                                 cell.style(Attr::Bold);
                                 cell.style(Attr::ForegroundColor(color::GREEN));
