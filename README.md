@@ -70,6 +70,12 @@ There are existing compiled binaries for Windows at the moment.
 - `search (s)` - A regular expression to filter and display only rows with columns that contain matching values. The matching fields will be highlighed
 - `codec (c)` - The codec for decompression - omit for no codec, or specify "deflate"
 
+## TODO
+
+- Configurable display formats (CSV, JSON, etc.)
+- Avro generation from JSON
+- Schema
+
 ## Caveats
 
 - Only supports top-level records right now
