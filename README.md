@@ -23,6 +23,7 @@ cargo build --release
 ### Binaries
 
 There are existing compiled binaries for Windows at the moment.
+They can be downloaded from the [releases](https://github.com/guywald1/ravro/releases) page.
 
 ## Usage
 
