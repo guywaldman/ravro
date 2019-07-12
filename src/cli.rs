@@ -3,9 +3,7 @@ use avro_rs::{Codec, Reader};
 use glob::glob;
 use std::fs;
 use std::path::PathBuf;
-
-pub(crate) const NULL: &'static str = "null";
-pub(crate) const NA: &'static str = "N/A";
+use crate::avro_value::AvroValue;
 pub(crate) const CODEC_DEFLATE: &'static str = "deflate";
 
 #[derive(Debug)]
@@ -15,11 +13,27 @@ pub(crate) struct AvroFile {
 }
 
 #[derive(Debug)]
-pub(crate) struct AvroCli {
+pub(crate) struct CliService {
     files: Vec<AvroFile>,
 }
 
-impl AvroCli {
+#[derive(Debug, Clone)]
+pub(crate) struct AvroColumnarValue {
+    name: String,
+    value: AvroValue
+}
+
+impl AvroColumnarValue {
+    pub fn from(name: String, value: AvroValue) -> Self {
+        AvroColumnarValue { name, value }
+    }
+
+    pub fn value(&self) -> &AvroValue {
+        &self.value
+    }
+}
+
+impl CliService {
     /// Creates an `Avro` as a union of all avros in the received paths
     ///
     /// # Arguments
@@ -55,7 +69,7 @@ impl AvroCli {
             files.push(AvroFile { data, path });
         }
 
-        AvroCli { files }
+        CliService { files }
     }
 
     /// Get all the names of the columns.
@@ -83,21 +97,29 @@ impl AvroCli {
     /// 
     /// # Arguments
     /// * `fields_to_get` - Names of the columns to retrieve
-    pub fn get_fields(&self, fields_to_get: Vec<String>) -> Vec<Vec<String>> {
+    /// * `take` - Number of rows to take
+    pub fn get_fields(&self, fields_to_get: Vec<String>, take: Option<u32>) -> Vec<Vec<AvroColumnarValue>> {
         let mut extracted_fields = Vec::new();
         for file in &self.files {
             let reader = Reader::new(&file.data[..])
                 .expect(&format!("Could not read Avro file {}", file.path.display()));
 
             for (i, row) in reader.enumerate() {
+                if extracted_fields.len() as u32 >= take.unwrap_or(u32::max_value()) {
+                    break;
+                }
+
                 let row = row.expect(&format!("Could not parse row {} from the Avro", i));
                 if let Value::Record(fields) = row {
                     let mut extracted_fields_for_row = Vec::new();
                     for field_name in &fields_to_get {
                         let field_value_to_insert =
                             match fields.iter().find(|(n, _)| n == field_name) {
-                                Some((_, val)) => format_avro_value(&val),
-                                None => NA.to_owned(),
+                                Some((field_name, field_value)) => {
+                                    let v = field_value.clone();
+                                    AvroColumnarValue::from(field_name.to_owned(), AvroValue::from(v))
+                                },
+                                None => AvroColumnarValue::from(field_name.to_owned(), AvroValue::na())
                             };
                         extracted_fields_for_row.push(field_value_to_insert);
                     }
@@ -109,51 +131,27 @@ impl AvroCli {
     }
 }
 
-pub(crate) fn format_avro_value(value: &Value) -> String {
-    match value {
-        Value::Array(a) => format!(
-            "{}",
-            a.iter()
-                .map(|v| format_avro_value(v))
-                .collect::<Vec<String>>()
-                .join(", ")
-        ),
-        Value::Bytes(b) => format!(
-            "{}",
-            b.iter()
-                .map(|n| format!("{}", n))
-                .collect::<Vec<String>>()
-                .join(", ")
-        ),
-        Value::Boolean(b) => format!("{}", b),
-        Value::Double(d) => format!("{}", d),
-        Value::Enum(id, desc) => format!("{} ({})", id, desc),
-        Value::Fixed(_, f) => format!(
-            "{}",
-            f.iter()
-                .map(|n| format!("{}", n))
-                .collect::<Vec<String>>()
-                .join(", ")
-        ),
-        Value::Float(f) => format!("{}", f),
-        Value::Int(i) => format!("{}", i),
-        Value::Long(l) => format!("{}", l),
-        Value::Map(m) => format!(
-            "{}",
-            m.iter()
-                .map(|(k, v)| format!("{}: {}", k, format_avro_value(v)))
-                .collect::<Vec<String>>()
-                .join(", ")
-        ),
-        Value::Null => NULL.to_owned(),
-        Value::Record(m) => format!(
-            "{}",
-            m.iter()
-                .map(|(k, v)| format!("{}: {}", k, format_avro_value(v)))
-                .collect::<Vec<String>>()
-                .join(", ")
-        ),
-        Value::String(s) => s.clone(),
-        Value::Union(u) => format_avro_value(&*u),
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::Path;
+
+    #[test]
+    fn test_get_all_field_names() {
+        println!("asdas");
+        let path_to_test_avro = Path::new("./test_assets/bttf.avro").to_str().unwrap().to_owned();
+        let cli = CliService::from(path_to_test_avro, None);
+        let field_names = cli.get_all_field_names();
+        assert_eq!(field_names, vec!["firstName", "lastName", "age"]);
+    }
+
+    #[test]
+    fn test_get_fields() {
+        println!("asdas");
+        let path_to_test_avro = Path::new("./test_assets/bttf.avro").to_str().unwrap().to_owned();
+        let _cli = CliService::from(path_to_test_avro, None);
+        // let field_names = cli.get_fields(vec!["firstName", "age"], None);
+        // assert_eq!(field_names, vec!["firstName", "lastName", "age"]);
     }
 }

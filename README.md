@@ -31,7 +31,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 
 ```shell
 > # Retrieve all columns for a list of records
-> ravro get .\bttf.avro
+> ravro get .\test_assets\bttf.avro
 
 +---------------+--------------+-------------+
 | firstName     | lastName     | nickname    |
@@ -44,7 +44,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 +---------------+--------------+-------------+
 
 > # Search (using regular expressions)
-> ravro get .\bttf.avro --search McFly
+> ravro get .\test_assets\bttf.avro --search McFly
 
 +---------------+--------------+-------------+
 | firstName     | lastName     | nickname    |
@@ -53,7 +53,7 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 +---------------+--------------+-------------+
 
 > # Select only some columns
-> ravro get .\bttf.avro --fields firstName nickname
+> ravro get .\test_assets\bttf.avro --fields firstName nickname
 
 +---------------+--------------+
 | firstName     | nickname     |
@@ -64,17 +64,30 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 +---------------+--------------+
 | Biff          | Biff         |
 +---------------+--------------+
+
+> # Select the first 2 columns
+> ravro get .\test_assets\bttf*.avro --fields firstName nickname --take 2
+
++---------------+--------------+
+| firstName     | nickname     |
++---------------+--------------+
+| Marty         | Marty        |
++---------------+--------------+
+| Emmett        | Doc          |
++---------------+--------------+
 ```
 
 ## Options
 
-- `fields (f)` - select only the fields you wish to retrieve
-- `path (p)` - a glob to one or multiple Avro files
-- `search (s)` - A regular expression to filter and display only rows with columns that contain matching values. The matching fields will be highlighed
+- `fields (f)` - The list (separated by spaces) of the fields you wish to retrieve
+- `path (p)` - The glob to one or multiple Avro files
+- `search (s)` - The regular expression to filter and display only rows with columns that contain matching values. The matching fields will be highlighed
+- `take (t)` - The number of records you wish to retrieve
 - `codec (c)` - The codec for decompression - omit for no codec, or specify "deflate"
 
 ## TODO
 
+- Extract CLI functionality into a library
 - Configurable display formats (CSV, JSON, etc.)
 - Avro generation from JSON
 - Schema
