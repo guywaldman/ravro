@@ -1,6 +1,6 @@
 # ravro
 
-![Version 0.1.0](https://img.shields.io/badge/version-0.1.0-green.svg)
+![Version 0.2.0](https://img.shields.io/badge/version-0.2.0-green.svg)
 
 A CLI for [Apache Avro](https://avro.apache.org/) manipulations.
 
@@ -93,10 +93,10 @@ Biff,72
 ## Options
 
 - `fields (f)` - The list (separated by spaces) of the fields you wish to retrieve
-- `path (p)` - The glob to one or multiple Avro files
 - `search (s)` - The regular expression to filter and display only rows with columns that contain matching values. The matching fields will be highlighed
 - `take (t)` - The number of records you wish to retrieve
 - `codec (c)` - The codec for decompression - omit for no codec, or specify "deflate"
+- `format (p)` - The format you wish to output the Avro - omit for a pretty print as a table, or specify "csv" for CSV
 
 ## TODO
 
