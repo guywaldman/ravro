@@ -4,7 +4,9 @@ use glob::glob;
 use std::fs;
 use std::path::PathBuf;
 use crate::avro_value::AvroValue;
+
 pub(crate) const CODEC_DEFLATE: &'static str = "deflate";
+pub(crate) type AvroData = Vec<Vec<AvroColumnarValue>>;
 
 #[derive(Debug)]
 pub(crate) struct AvroFile {
@@ -98,7 +100,7 @@ impl CliService {
     /// # Arguments
     /// * `fields_to_get` - Names of the columns to retrieve
     /// * `take` - Number of rows to take
-    pub fn get_fields(&self, fields_to_get: Vec<String>, take: Option<u32>) -> Vec<Vec<AvroColumnarValue>> {
+    pub fn get_fields(&self, fields_to_get: &[String], take: Option<u32>) -> Vec<Vec<AvroColumnarValue>> {
         let mut extracted_fields = Vec::new();
         for file in &self.files {
             let reader = Reader::new(&file.data[..])
@@ -112,7 +114,7 @@ impl CliService {
                 let row = row.expect(&format!("Could not parse row {} from the Avro", i));
                 if let Value::Record(fields) = row {
                     let mut extracted_fields_for_row = Vec::new();
-                    for field_name in &fields_to_get {
+                    for field_name in fields_to_get {
                         let field_value_to_insert =
                             match fields.iter().find(|(n, _)| n == field_name) {
                                 Some((field_name, field_value)) => {

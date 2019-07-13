@@ -33,48 +33,61 @@ They can be downloaded from the [releases](https://github.com/guywald1/ravro/rel
 > # Retrieve all columns for a list of records
 > ravro get .\test_assets\bttf.avro
 
-+---------------+--------------+-------------+
-| firstName     | lastName     | nickname    |
-+---------------+--------------+-------------+
-| Marty         | McFly        | Marty       |
-+---------------+--------------+-------------+
-| Emmett        | Brown        | Doc         |
-+---------------+--------------+-------------+
-| Biff          | Tannen       | Biff        |
-+---------------+--------------+-------------+
++-----------+--------------+-----+
+| firstName | lastName     | age |
++-----------+--------------+-----+
+| Marty     | McFly        | 24  |
++-----------+--------------+-----+
+| Biff      | Tannen       | 72  |
++-----------+--------------+-----+
+| Emmett    | Brown        | 65  |
++-----------+--------------+-----+
+| Loraine   | Baines-McFly | 62  |
++-----------+--------------+-----+
 
 > # Search (using regular expressions)
 > ravro get .\test_assets\bttf.avro --search McFly
 
-+---------------+--------------+-------------+
-| firstName     | lastName     | nickname    |
-+---------------+--------------+-------------+
-| Marty         | McFly        | Marty       | # McFly should appear in bold green here
-+---------------+--------------+-------------+
++-----------+--------------+-----+
+| firstName | lastName     | age |
++-----------+--------------+-----+
+| Marty     | McFly        | 24  | # the second field will appear in bold green here
++-----------+--------------+-----+
+| Loraine   | Baines-McFly | 62  | # the second field will appear in bold green here
++-----------+--------------+-----+
 
 > # Select only some columns
-> ravro get .\test_assets\bttf.avro --fields firstName nickname
+> ravro get .\test_assets\bttf.avro --fields firstName age
 
-+---------------+--------------+
-| firstName     | nickname     |
-+---------------+--------------+
-| Marty         | Marty        |
-+---------------+--------------+
-| Emmett        | Doc          |
-+---------------+--------------+
-| Biff          | Biff         |
-+---------------+--------------+
++-----------+-----+
+| firstName | age |
++-----------+-----+
+| Marty     | 24  |
++-----------+-----+
+| Biff      | 72  |
++-----------+-----+
+| Emmett    | 65  |
++-----------+-----+
+| Loraine   | 62  |
++-----------+-----+
 
 > # Select the first 2 columns
-> ravro get .\test_assets\bttf*.avro --fields firstName nickname --take 2
+> ravro get .\test_assets\bttf*.avro --fields firstName age --take 2
 
-+---------------+--------------+
-| firstName     | nickname     |
-+---------------+--------------+
-| Marty         | Marty        |
-+---------------+--------------+
-| Emmett        | Doc          |
-+---------------+--------------+
++-----------+-----+
+| firstName | age |
++-----------+-----+
+| Marty     | 24  |
++-----------+-----+
+| Biff      | 72  |
++-----------+-----+
+
+> # Output as CSV
+> ravro get .\test_assets\bttf*.avro --fields firstName age --take 2 --format csv
+
+firstName,age
+Marty,24
+Biff,72
 ```
 
 ## Options
