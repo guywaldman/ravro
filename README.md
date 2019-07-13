@@ -100,8 +100,9 @@ Biff,72
 
 ## TODO
 
+- Parquet support using [Arrow's Parquet crate](https://github.com/apache/arrow/tree/master/rust/parquet)
 - Extract CLI functionality into a library
-- Configurable display formats (CSV, JSON, etc.)
+- More display formats
 - Avro generation from JSON
 - Schema
 - `Snappy` codec
